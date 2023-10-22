@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  username String @unique
+  password String // Test purpose only, store only hashed_password in real world
+  roles    Role[] @default([operator])
+}
+
+enum Role {
+  admin
+  operator
+}
+
+model Robot {
+  id                 String   @id @default(uuid())
+  name               String
+  model              String
+  manufacturing_date DateTime
+  status             Status?  @default(active)
+  current_location   String
+  company            Company? @relation(fields: [company_id], references: [id])
+  company_id         String?
+}
+
+enum Status {
+  active
+  inactive
+  maintenance
+}
+
+model Company {
+  id      String  @id @default(uuid())
+  name    String
+  address String
+  robots  Robot[]
+}

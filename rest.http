@@ -1,0 +1,173 @@
+@baseURL = http://localhost:3000/api/v1
+
+####### ------------------------------AUTH------------------------------ #######
+###
+# @name adminLogin
+@adminAccessToken = {{adminLogin.response.body.$.access_token}}
+
+POST {{baseURL}}/auth/login
+content-type: application/json
+
+{
+  "username":"john",
+  "password": "admin"
+}
+###
+
+###
+# @name operatorLogin
+@operatorAccessToken = {{operatorLogin.response.body.$.access_token}}
+POST {{baseURL}}/auth/login
+content-type: application/json
+
+{
+  "username":"ray",
+  "password": "operator"
+}
+###
+
+
+### ADMIN PROFILE
+GET {{baseURL}}/auth/profile
+Authorization: Bearer {{adminAccessToken}}
+###
+
+####### ------------------------------AUTH------------------------------ #######
+
+
+####### ------------------------------ROBOT------------------------------ #######
+
+###
+# @name getRobots
+GET {{baseURL}}/robots
+Authorization: Bearer {{adminAccessToken}}
+
+###
+
+###
+@secondRobotId = {{getRobots.response.body.$.[1].id}}
+GET {{baseURL}}/robots/{{secondRobotId}}
+Authorization: Bearer {{adminAccessToken}}
+
+###
+
+### ADMIN
+
+# @name createRobot
+POST {{baseURL}}/robots
+content-type: application/json
+Authorization: Bearer {{operatorAccessToken}}
+
+{
+  "name": "new Robot",
+  "model": "new Model",
+  "manufacturing_date": "2023-10-19T14:42:55.988Z",
+  "status": "inactive",
+  "current_location": "new location"
+}
+###
+
+
+### PATCH
+@newlyCreatedRobotId = {{createRobot.response.body.$.id}}
+PATCH {{baseURL}}/robots/{{newlyCreatedRobotId}}
+content-type: application/json
+Authorization: Bearer {{adminAccessToken}}
+
+{
+  "name": "updated_name",
+  "model": "updated_model",
+  "manufacturing_date": "2023-10-19T14:42:55.988Z",
+  "status": "maintenance",
+  "current_location": "Tesla HQ"
+}
+###
+
+### DELETE
+@newlyCreatedRobotId = {{createRobot.response.body.$.id}}
+DELETE  {{baseURL}}/robots/{{newlyCreatedRobotId}}
+content-type: application/json
+Authorization: Bearer {{operatorAccessToken}}
+###
+
+
+@robotId = {{createRobot.response.body.$.id}}
+### ASSIGN COMPANY
+POST  {{baseURL}}/robots/{{robotId}}/assign-company/{{companyId}}
+content-type: application/json
+Authorization: Bearer {{adminAccessToken}}
+###
+
+@robotId = {{createRobot.response.body.$.id}}
+### UNASSIGN ROBOT
+POST  {{baseURL}}/robots/{{robotId}}/unassign-company
+content-type: application/json
+Authorization: Bearer {{adminAccessToken}}
+###
+
+####### ------------------------------ROBOT------------------------------ #######
+
+
+####### ------------------------------COMPANY------------------------------ #######
+
+###
+# @name getCompanies
+GET {{baseURL}}/companies
+Authorization: Bearer {{adminAccessToken}}
+
+###
+
+###
+@companyId = {{getCompanies.response.body.$.[0].id}}
+GET {{baseURL}}/companies/{{companyId}}
+Authorization: Bearer {{adminAccessToken}}
+
+###
+
+### ADMIN
+# @name createCompany
+POST {{baseURL}}/companies
+content-type: application/json
+Authorization: Bearer {{adminAccessToken}}
+
+{
+  "name": "new Company",
+  "address": "Woodlay Residence"
+}
+###
+
+
+### PATCH
+@companyId = {{createCompany.response.body.$.id}}
+PATCH {{baseURL}}/companies/{{companyId}}
+content-type: application/json
+Authorization: Bearer {{adminAccessToken}}
+
+{
+  "name": "updated Company Name",
+  "address": "updated Woodlay"
+}
+###
+
+
+# Expect: 403
+@companyId = {{createCompany.response.body.$.id}}
+POST {{baseURL}}/companies
+content-type: application/json
+Authorization: Bearer {{operatorAccessToken}}
+
+{
+  "name": "Forbidden company",
+  "address": "Forbidden address"
+}
+###
+
+### DELETE
+@companyId = {{createCompany.response.body.$.id}}
+DELETE  {{baseURL}}/companies/{{companyId}}
+content-type: application/json
+Authorization: Bearer {{adminAccessToken}}
+###
+
+
+####### ------------------------------COMPANY------------------------------ #######
