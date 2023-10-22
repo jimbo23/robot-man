@@ -3,22 +3,27 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const users = await prisma.user.createMany({
-    data: [
-      {
-        username: 'john',
-        password: 'admin',
-        roles: ['admin', 'operator'],
-      },
-      {
-        username: 'ray',
-        password: 'operator',
-        roles: ['operator'],
-      },
-    ],
+  const admin = await prisma.user.upsert({
+    where: { username: 'john' },
+    update: {},
+    create: {
+      username: 'john',
+      password: 'admin',
+      roles: ['admin', 'operator'],
+    },
   });
 
-  console.log({ users });
+  const operator = await prisma.user.upsert({
+    where: { username: 'john' },
+    update: {},
+    create: {
+      username: 'ray',
+      password: 'operator',
+      roles: ['operator'],
+    },
+  });
+
+  console.log({ admin, operator });
 
   const robots = await prisma.robot.createMany({
     data: [
