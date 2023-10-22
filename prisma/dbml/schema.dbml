@@ -1,0 +1,40 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  username String [unique, not null]
+  password String [not null]
+  roles Role[] [not null]
+}
+
+Table Robot {
+  id String [pk]
+  name String [not null]
+  model String [not null]
+  manufacturing_date DateTime [not null]
+  status Status [default: 'active']
+  current_location String [not null]
+  company Company
+  company_id String
+}
+
+Table Company {
+  id String [pk]
+  name String [not null]
+  address String [not null]
+  robots Robot [not null]
+}
+
+Enum Role {
+  admin
+  operator
+}
+
+Enum Status {
+  active
+  inactive
+  maintenance
+}
+
+Ref: Robot.company_id > Company.id

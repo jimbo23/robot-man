@@ -1,62 +1,55 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Robot Management System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Introduction
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Welcome to the Robot Management System! This backend system streamlines the management of robots and companies, providing various features for CRUD (Create, Read, Update, Delete) operations.
 
-## Description
+## User Authentication and Authorization
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This system includes a user authentication mechanism using JSON Web Tokens (JWT). It supports two user roles: operators and administrators. Operators are granted permission for CRUD operations on robots, while administrators enjoy full access to the system.
 
-## Installation
+## Robot Management
+
+Our system features APIs that facilitate robot management. Each robot is equipped with the following attributes:
+
+- **Robot ID**: A unique identifier for each robot.
+- **Name**: The name of the robot.
+- **Model**: The robot's model.
+- **Manufacturing Date**: The date when the robot was manufactured.
+- **Status**: The robot's status (active, inactive, maintenance).
+- **Current Location**: The robot's current location.
+- **Company Assignment**: Robots can be assigned to specific companies.
+
+## Company Management
+
+The system also includes APIs for efficient company management. Each company is defined by the following attributes:
+
+- **Company ID**: A unique identifier for each company.
+- **Name**: The company's name.
+- **Address**: The physical address of the company.
+
+## Get Started
+
+- Running the application with `Docker Compose` is recommended to facilitate the setup of application server and database server.
+- Make sure you have `docker` installed in your local machine.
+
+Run:
 
 ```bash
-$ npm install
+docker compose build && docker compose up
 ```
 
-## Running the app
+## List of API endpoints:
 
-```bash
-# development
-$ npm run start
+- Visit `http://localhost:3000/api` for the list of API endpoints:
 
-# watch mode
-$ npm run start:dev
+## API testing:
 
-# production mode
-$ npm run start:prod
-```
+- Recommended: Install VScode extension https://marketplace.visualstudio.com/items?itemName=humao.rest-client to faciliate API testing with VSCode
+- Open up `rest.http` file and run the request in VSCode.
+- Alternatively you may use other API client for testing.
+- The credentials for mock API account can be found on `rest.http`.
 
-## Test
+## Database Design / ERD:
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+<img src='./robot-man-db.png'>
