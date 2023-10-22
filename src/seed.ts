@@ -8,7 +8,8 @@ async function main() {
     update: {},
     create: {
       username: 'john',
-      password: 'admin',
+      hashed_password:
+        '$2b$05$kcIsWdmfLki51VC3ZKh/rOGoXJ2R9Y/vh5n5707oKrJpRIa.Kqd.W',
       roles: ['admin', 'operator'],
     },
   });
@@ -18,7 +19,8 @@ async function main() {
     update: {},
     create: {
       username: 'ray',
-      password: 'operator',
+      hashed_password:
+        '$2b$05$EhLstStkUPi3RtqRV8PnV.c/nrhu5fn4HQ6PvhuOwki9.0afWJ972',
       roles: ['operator'],
     },
   });

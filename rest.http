@@ -24,6 +24,19 @@ content-type: application/json
   "username":"ray",
   "password": "operator"
 }
+
+###
+
+###
+# @name operatorRegister
+POST {{baseURL}}/auth/register
+content-type: application/json
+
+{
+  "username":"new123123",
+  "password": "new123123",
+  "confirmPassword": "new123123"
+}
 ###
 
 
@@ -118,14 +131,15 @@ Authorization: Bearer {{adminAccessToken}}
 ###
 
 ###
-@companyId = {{getCompanies.response.body.$.[0].id}}
-GET {{baseURL}}/companies/{{companyId}}
+@companyId1 = {{getCompanies.response.body.$.[0].id}}
+GET {{baseURL}}/companies/{{companyId1}}
 Authorization: Bearer {{adminAccessToken}}
 
 ###
 
 ### ADMIN
 # @name createCompany
+@companyId2 = {{createCompany.response.body.$.id}}
 POST {{baseURL}}/companies
 content-type: application/json
 Authorization: Bearer {{adminAccessToken}}
@@ -138,8 +152,7 @@ Authorization: Bearer {{adminAccessToken}}
 
 
 ### PATCH
-@companyId = {{createCompany.response.body.$.id}}
-PATCH {{baseURL}}/companies/{{companyId}}
+PATCH {{baseURL}}/companies/{{companyId2}}
 content-type: application/json
 Authorization: Bearer {{adminAccessToken}}
 
@@ -151,7 +164,6 @@ Authorization: Bearer {{adminAccessToken}}
 
 
 # Expect: 403
-@companyId = {{createCompany.response.body.$.id}}
 POST {{baseURL}}/companies
 content-type: application/json
 Authorization: Bearer {{operatorAccessToken}}

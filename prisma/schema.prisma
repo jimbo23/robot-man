@@ -15,9 +15,9 @@ datasource db {
 }
 
 model User {
-  username String @unique
-  password String // Test purpose only, store only hashed_password in real world
-  roles    Role[] @default([operator])
+  username        String @unique
+  hashed_password String
+  roles           Role[] @default([operator])
 }
 
 enum Role {

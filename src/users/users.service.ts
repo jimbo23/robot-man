@@ -1,4 +1,9 @@
-import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -6,15 +11,14 @@ export class UsersService {
   constructor(private prismaService: PrismaService) {}
 
   async findOne(username: string) {
-    try {
-      return await this.prismaService.user.findUniqueOrThrow({
-        where: { username },
-      });
-    } catch {
-      throw new UnauthorizedException({
-        message: 'Invalid credentials',
-        status: HttpStatus.UNAUTHORIZED,
-      });
-    }
+    return await this.prismaService.user.findUnique({
+      where: { username },
+    });
+  }
+
+  async createOne(username: string, hashed_password: string) {
+    return await this.prismaService.user.create({
+      data: { hashed_password, username },
+    });
   }
 }

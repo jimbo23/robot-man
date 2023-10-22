@@ -4,7 +4,7 @@
 
 Table User {
   username String [unique, not null]
-  password String [not null]
+  hashed_password String [not null]
   roles Role[] [not null]
 }
 

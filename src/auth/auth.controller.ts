@@ -14,6 +14,7 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { RegisterDto, registerSchema } from './dto/register.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +24,15 @@ export class AuthController {
   @Post('login')
   @UsePipes(new ZodValidationPipe(loginSchema))
   login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto.username, loginDto.password);
+    return this.authService.login(loginDto);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('register')
+  // @ts-ignore
+  @UsePipes(new ZodValidationPipe(registerSchema))
+  register(@Body() registerDto: RegisterDto) {
+    return this.authService.register(registerDto);
   }
 
   @UseGuards(AuthGuard)
