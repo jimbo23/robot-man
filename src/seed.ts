@@ -14,7 +14,7 @@ async function main() {
   });
 
   const operator = await prisma.user.upsert({
-    where: { username: 'john' },
+    where: { username: 'ray' },
     update: {},
     create: {
       username: 'ray',
